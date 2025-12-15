@@ -1,8 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import { runOnJS } from 'react-native-reanimated';
 import { createYear } from "../components/dataHandlers/calendarHandler";
 import { CalendarData, Year } from "../types/dates";
 
@@ -31,17 +33,26 @@ export const Calendar = ({ navigation }: CalendarProps) => {
     }, [selected_year]);
 
 
+    // Handling year change via swipe gestures
+    const changeYear = useCallback((delta: number) => {
+        setSelectedYear(prev => prev + delta);
+    }, []);
+    // Use a horizontal pan gesture to change year on swipe end.
+    const horizontalPan = Gesture.Pan()
+        .onEnd((ev) => {
+            const dx = ev.translationX ?? 0;
+            if (dx <= -100) runOnJS(changeYear)(1);
+            if (dx >= 100) runOnJS(changeYear)(-1);
+        });
+
+
     return(
         <View>
-            <View style={style_sheet.title_view}>
-                <Text style={style_sheet.title_text}> {shown_year?.year_absolute}</Text>
-            </View>
-            <TouchableOpacity onPress={() => setSelectedYear(prev => prev - 1)}>
-                <Text style={{color: "white"}}>Previous Year</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setSelectedYear(prev => prev + 1)}>
-                <Text style={{color: "white"}}>Next Year</Text>
-            </TouchableOpacity>
+            <GestureDetector gesture={horizontalPan}>
+                <View style={style_sheet.title_view}>
+                    <Text style={style_sheet.title_text}> {shown_year?.year_absolute}</Text>
+                </View>
+            </GestureDetector>
         </View>
     )
 }

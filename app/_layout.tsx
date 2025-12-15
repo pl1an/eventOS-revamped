@@ -1,5 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet } from "react-native";
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Calendar } from "./pages/calendar";
@@ -28,16 +29,18 @@ export default function RootLayout() {
     });
 
     return (
-        <Stack.Navigator 
-            initialRouteName="calendar" 
-            screenOptions={{
-                headerShown:false,
-                presentation: 'transparentModal',
-                contentStyle: style_sheet.container
-            }}
-        >
-            <Stack.Screen name="calendar" component={Calendar} />
-            <Stack.Screen name="eventinfo" component={Eventinfo} />
-        </Stack.Navigator>
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <Stack.Navigator 
+                initialRouteName="calendar" 
+                screenOptions={{
+                    headerShown:false,
+                    presentation: 'transparentModal',
+                    contentStyle: style_sheet.container
+                }}
+            >
+                <Stack.Screen name="calendar" component={Calendar} />
+                <Stack.Screen name="eventinfo" component={Eventinfo} />
+            </Stack.Navigator>
+        </GestureHandlerRootView>
     );
 }
