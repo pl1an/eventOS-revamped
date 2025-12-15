@@ -10,7 +10,12 @@ import { themes } from "./styles/themes";
 
 
 
-const Stack = createNativeStackNavigator();
+export type RootStackParamList = {
+    calendar: { selected_year?: number};
+    eventinfo: { event_id: string };
+}
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 
 export default function RootLayout() {
@@ -27,6 +32,7 @@ export default function RootLayout() {
             backgroundColor:themes.default.background
         }
     });
+    
 
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
