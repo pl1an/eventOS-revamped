@@ -1,24 +1,43 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import 'react-native-reanimated';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { StyleSheet } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Calendar } from "./pages/calendar";
+import { Eventinfo } from "./pages/eventinfo";
 
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
+import { themes } from "./styles/themes";
+
+
+
+const Stack = createNativeStackNavigator();
+
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
 
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal', title: 'Modal' }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-  );
+    const insets = useSafeAreaInsets();
+    const style_sheet = StyleSheet.create({
+        container:{
+            width:"100%",
+            height:"100%",
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+            paddingLeft: Math.max(insets.left, 16),
+            paddingRight: Math.max(insets.right, 16),
+            backgroundColor:themes.default.background
+        }
+    });
+
+    return (
+        <Stack.Navigator 
+            initialRouteName="calendar" 
+            screenOptions={{
+                headerShown:false,
+                presentation: 'transparentModal',
+                contentStyle: style_sheet.container
+            }}
+        >
+            <Stack.Screen name="calendar" component={Calendar} />
+            <Stack.Screen name="eventinfo" component={Eventinfo} />
+        </Stack.Navigator>
+    );
 }
