@@ -6,15 +6,13 @@ import { StyleSheet, Text, View } from "react-native";
 import { Gesture, GestureDetector } from "react-native-gesture-handler";
 import Animated, { interpolate, runOnJS, useAnimatedStyle, useSharedValue, withTiming } from "react-native-reanimated";
 import { RootStackParamList } from "../_layout";
+import { Month } from "../components/calendar/month";
 import { createYear } from "../components/dataHandlers/calendarHandler";
 
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { CalendarData, Year } from "../types/dates";
+import type { CalendarData, Year } from "../types/dates";
 
-import { Dimensions } from "react-native";
 import { themes } from "../styles/themes";
-const screen_width = Dimensions.get('window').width;
-const screen_height = Dimensions.get('window').height;
 
 
 type CalendarProps = {
@@ -52,6 +50,7 @@ export const Calendar = ({ navigation }: CalendarProps) => {
 
 
     // Using zoom view to hide year title
+    const [current_zoom, setCurrentZoom] = useState(1);
     const zoomable_view_ref = useRef<ReactNativeZoomableView | null>(null);
     const title_offset_y = useSharedValue(0);
 
@@ -68,17 +67,36 @@ export const Calendar = ({ navigation }: CalendarProps) => {
                 <ReactNativeZoomableView 
                     ref={zoomable_view_ref}
                     bindToBorders={false} 
+                    initialZoom={0.085}
                     minZoom={0} maxZoom={10} 
                     movementSensibility={1}
                     disableMomentum={true}
                     onZoomAfter={(event, g_state, z_event) => {
-                        if (z_event.zoomLevel >= 1.5) title_offset_y.value = withTiming(2 * 60, {duration:300});
+                        setCurrentZoom(z_event.zoomLevel);
+                        if (z_event.zoomLevel >= 0.085) title_offset_y.value = withTiming(2 * 60, {duration:300});
                         else title_offset_y.value = withTiming(0, {duration:300});
                         return false;
                     }}
                 >
-                    {/* Calendar rendering logic would go here */}
-                    <View style={{width:200, height:200, backgroundColor:"lightgray"}}>
+                    <View style={style_sheet.year_rows}>
+                        <Month month={shown_year?.months[0]} calendar_data={calendar_data} zoom={current_zoom}></Month>
+                        <Month month={shown_year?.months[1]} calendar_data={calendar_data} zoom={current_zoom}></Month>
+                        <Month month={shown_year?.months[2]} calendar_data={calendar_data} zoom={current_zoom}></Month>
+                    </View>
+                    <View style={style_sheet.year_rows}>
+                        <Month month={shown_year?.months[3]} calendar_data={calendar_data} zoom={current_zoom}></Month>
+                        <Month month={shown_year?.months[4]} calendar_data={calendar_data} zoom={current_zoom}></Month>
+                        <Month month={shown_year?.months[5]} calendar_data={calendar_data} zoom={current_zoom}></Month>
+                    </View>
+                    <View style={style_sheet.year_rows}>
+                        <Month month={shown_year?.months[6]} calendar_data={calendar_data} zoom={current_zoom}></Month>
+                        <Month month={shown_year?.months[7]} calendar_data={calendar_data} zoom={current_zoom}></Month>
+                        <Month month={shown_year?.months[8]} calendar_data={calendar_data} zoom={current_zoom}></Month>
+                    </View>
+                    <View style={style_sheet.year_rows}>
+                        <Month month={shown_year?.months[9]} calendar_data={calendar_data} zoom={current_zoom}></Month>
+                        <Month month={shown_year?.months[10]} calendar_data={calendar_data} zoom={current_zoom}></Month>
+                        <Month month={shown_year?.months[11]} calendar_data={calendar_data} zoom={current_zoom}></Month>
                     </View>
                 </ReactNativeZoomableView>
             </View>
@@ -115,5 +133,9 @@ const style_sheet = StyleSheet.create({
         color:"white",
         fontSize:50,
         fontWeight:"bold",
+    },
+    year_rows:{
+        flexDirection: 'row',
+        margin: 100,
     },
 });

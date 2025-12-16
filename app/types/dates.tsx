@@ -1,15 +1,19 @@
 import { Commitment } from "./commitments";
 
 
+export type Weekday = "Sunday" | "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday";
+
+
+export interface DayLocation {
+    day: number;
+    month: number;
+    year: number;
+}
 export interface Day {
     id: string;
     date: Date;
-    weekday: "Sunday" | "Monday" | "Tuesday" | "Wednesday" | "Thursday" | "Friday" | "Saturday";
-    calendar_index:{
-        day: number;
-        month: number;
-        year: number;
-    }
+    weekday: Weekday;
+    calendar_index: DayLocation;
     commitments:{
         tasks: Commitment[];
         events: Commitment[];
@@ -17,8 +21,13 @@ export interface Day {
     };
 }
 
+export interface MonthLocation {
+    month: number;
+    year: number;
+}
 export interface Month {
     id: string;
+    month_name: string;
     calendar_index:{
         month: number;
         year: number;
