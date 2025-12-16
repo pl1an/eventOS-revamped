@@ -1,6 +1,7 @@
 import { themes } from '@/app/styles/themes';
 import React, { useEffect } from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { SharedValue } from 'react-native-reanimated';
 import { CalendarData, DayLocation, Month as MonthType } from '../../types/dates';
 import { createYear, getDayFromLocation, getMonthFromLocation, getParentYear, weekday_names } from '../dataHandlers/calendarHandler';
 import { Day } from './day';
@@ -10,7 +11,7 @@ import { Day } from './day';
 interface MonthProps {
     month?: MonthType;
     calendar_data: CalendarData;
-    zoom?: number;
+    zoom?: SharedValue<number>;
 }
 
 export const Month = ({ month, calendar_data, zoom}: MonthProps) => {

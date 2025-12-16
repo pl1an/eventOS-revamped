@@ -50,7 +50,7 @@ export const Calendar = ({ navigation }: CalendarProps) => {
 
 
     // Using zoom view to hide year title
-    const [current_zoom, setCurrentZoom] = useState(1);
+    const zoom_level = useSharedValue(0.085);
     const zoomable_view_ref = useRef<ReactNativeZoomableView | null>(null);
     const title_offset_y = useSharedValue(0);
 
@@ -72,31 +72,31 @@ export const Calendar = ({ navigation }: CalendarProps) => {
                     movementSensibility={1}
                     disableMomentum={true}
                     onZoomAfter={(event, g_state, z_event) => {
-                        setCurrentZoom(z_event.zoomLevel);
+                        zoom_level.value = z_event.zoomLevel;
                         if (z_event.zoomLevel >= 0.085) title_offset_y.value = withTiming(2 * 60, {duration:300});
                         else title_offset_y.value = withTiming(0, {duration:300});
                         return false;
                     }}
                 >
                     <View style={style_sheet.year_rows}>
-                        <Month month={shown_year?.months[0]} calendar_data={calendar_data} zoom={current_zoom}></Month>
-                        <Month month={shown_year?.months[1]} calendar_data={calendar_data} zoom={current_zoom}></Month>
-                        <Month month={shown_year?.months[2]} calendar_data={calendar_data} zoom={current_zoom}></Month>
+                        <Month month={shown_year?.months[0]} calendar_data={calendar_data} zoom={zoom_level}></Month>
+                        <Month month={shown_year?.months[1]} calendar_data={calendar_data} zoom={zoom_level}></Month>
+                        <Month month={shown_year?.months[2]} calendar_data={calendar_data} zoom={zoom_level}></Month>
                     </View>
                     <View style={style_sheet.year_rows}>
-                        <Month month={shown_year?.months[3]} calendar_data={calendar_data} zoom={current_zoom}></Month>
-                        <Month month={shown_year?.months[4]} calendar_data={calendar_data} zoom={current_zoom}></Month>
-                        <Month month={shown_year?.months[5]} calendar_data={calendar_data} zoom={current_zoom}></Month>
+                        <Month month={shown_year?.months[3]} calendar_data={calendar_data} zoom={zoom_level}></Month>
+                        <Month month={shown_year?.months[4]} calendar_data={calendar_data} zoom={zoom_level}></Month>
+                        <Month month={shown_year?.months[5]} calendar_data={calendar_data} zoom={zoom_level}></Month>
                     </View>
                     <View style={style_sheet.year_rows}>
-                        <Month month={shown_year?.months[6]} calendar_data={calendar_data} zoom={current_zoom}></Month>
-                        <Month month={shown_year?.months[7]} calendar_data={calendar_data} zoom={current_zoom}></Month>
-                        <Month month={shown_year?.months[8]} calendar_data={calendar_data} zoom={current_zoom}></Month>
+                        <Month month={shown_year?.months[6]} calendar_data={calendar_data} zoom={zoom_level}></Month>
+                        <Month month={shown_year?.months[7]} calendar_data={calendar_data} zoom={zoom_level}></Month>
+                        <Month month={shown_year?.months[8]} calendar_data={calendar_data} zoom={zoom_level}></Month>
                     </View>
                     <View style={style_sheet.year_rows}>
-                        <Month month={shown_year?.months[9]} calendar_data={calendar_data} zoom={current_zoom}></Month>
-                        <Month month={shown_year?.months[10]} calendar_data={calendar_data} zoom={current_zoom}></Month>
-                        <Month month={shown_year?.months[11]} calendar_data={calendar_data} zoom={current_zoom}></Month>
+                        <Month month={shown_year?.months[9]} calendar_data={calendar_data} zoom={zoom_level}></Month>
+                        <Month month={shown_year?.months[10]} calendar_data={calendar_data} zoom={zoom_level}></Month>
+                        <Month month={shown_year?.months[11]} calendar_data={calendar_data} zoom={zoom_level}></Month>
                     </View>
                 </ReactNativeZoomableView>
             </View>
